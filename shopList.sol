@@ -31,6 +31,16 @@ contract ShoppingList is IShoppingList{
         require(m_shoppingList.exists(purchaseId), 103);
         tvm.accept();
         delete m_shoppingList[purchaseId];
+
+        uint32 newPurchaseCount = 0;
+        mapping (uint32 => Purchase) newShoppingList;
+        for((, Purchase currentPurchase) : m_shoppingList) {
+            newPurchaseCount++;
+            newShoppingList[newPurchaseCount] = currentPurchase;
+            newShoppingList[newPurchaseCount].id = newPurchaseCount;
+        }
+        m_shoppingList = newShoppingList;
+        m_purchasesCount--;
     }
 
     function buyPurchase(uint32 purchaseId, uint64 fullPrice) public onlyOwner override{
