@@ -4,15 +4,15 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 // Our contracts and debots
-import "AbsDebot.sol";
+import "AbstractDebot.sol";
 
 // This debot can add, remove purchases to the shopping list and show information about the existing list 
-contract FillDebot is AbsDebot {
+contract ModifierDebot is AbstractDebot {
     string m_purchaseName;
 
     function _menu() virtual override internal {}
 
-    // This method adds purchases to the shopping list
+    // This methods add purchases to the shopping list
     function addPurchase(uint32 index) public{
         Terminal.input(tvm.functionId(setPurchaseName), "Enter purchase name: ", false);
     }
@@ -50,46 +50,12 @@ contract FillDebot is AbsDebot {
         }(m_purchaseName, purchaseAmount);
     }
 
-    // These methods show the existing shopping list
-    function showMyShopList(uint8 index) public view {
-        optional(uint) none;
-
-        IShoppingList(m_address).getPurchases{
-            abiVer: 2,
-            extMsg: true,
-            sign: false,
-            pubkey: none,
-            time: uint64(now),
-            expire: 0,
-            callbackId: tvm.functionId(printMyShopList),
-            onErrorId: 0
-        }();
-    }
-
-    function printMyShopList(Purchase[] myPurchases) public {
-        if(!myPurchases.empty()) {
-            Terminal.print(0, "Your shopping list:");
-            for((Purchase purchase) : myPurchases) {
-                string paid;
-                if (purchase.isPaid) {
-                    paid = ' ✓ ';
-                } else {
-                    paid = '___';
-                }
-                Terminal.print(0, format("{} {}  \"{}\" how many: {}", purchase.id, paid, purchase.name, purchase.amount));
-            }
-        } else {
-            Terminal.print(0, "Your shopping list is empty");
-        }
-        _menu();
-    }
-
     // These methods remove some purchase
     function deleteSomePurchase() public {
         if (m_summary.unpaidPurchases + m_summary.paidPurchases > 0) {
             Terminal.input(tvm.functionId(deleteSomePurchase_), "Enter purchase id with you want to delete: ", false);
         } else {
-            Terminal.print(0, "Sorry, you deleted all the purchases");
+            Terminal.print(0, "Sorry, you deleted all the purchases or your shopping list is empty");
             _menu();
         }
     }

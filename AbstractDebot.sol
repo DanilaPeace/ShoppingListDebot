@@ -14,7 +14,7 @@ import "base/Sdk.sol";
 // Our contracts and debots
 import "InterfacesAndStructs.sol";
 
-abstract contract AbsDebot is Debot{
+abstract contract AbstractDebot is Debot{
     TvmCell m_code; // contract code
     TvmCell m_data; // contract data
     TvmCell m_stateInit; // contract initial state
@@ -40,6 +40,7 @@ abstract contract AbsDebot is Debot{
         publisher = "Pisarev Danila";
         key = "SHOPPINGLIST list manager";
         author = "Pisarev Danila";
+        support = address.makeAddrStd(0, 0x2b4cc0ec6975123ff757346bd080097848710d44d7c15eed8e3e3cf13aa6c397);
         hello = "Hi, i'm a SHOPPINGLIST DeBot.";
         language = "en";
         dabi = m_debotAbi.get();

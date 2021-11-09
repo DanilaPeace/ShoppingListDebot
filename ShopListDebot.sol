@@ -4,13 +4,14 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 // Our contracts and debots
-import "FillDebot.sol";
-import "DoShoppingDebot.sol";
+import "ModifierDebot.sol";
+import "BuyerDebot.sol";
+import "ShownerDebot.sol";
 
 // This is the main debot for user itneraction
-contract ShopListDebot is FillDebot, DoShoppingDebot{
+contract ShopListDebot is ModifierDebot, BuyerDebot, ShownerDebot{
     // =================================================================================
-    function _menu() override(FillDebot, DoShoppingDebot) internal{
+    function _menu() override(ModifierDebot, BuyerDebot, ShownerDebot) internal{
         string sep = '----------------------------------------';
         Menu.select(
             format(

@@ -3,6 +3,22 @@
 	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
+			"name": "showMyShopList",
+			"inputs": [
+				{"name":"index","type":"uint8"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "printMyShopList",
+			"inputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"name","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"time","type":"uint64"},{"name":"isPaid","type":"bool"},{"name":"price","type":"uint64"}],"name":"myPurchases","type":"tuple[]"}
+			],
+			"outputs": [
+			]
+		},
+		{
 			"name": "makePurchase",
 			"inputs": [
 			],
@@ -53,22 +69,6 @@
 			"name": "callAddPurchase",
 			"inputs": [
 				{"name":"purchaseAmount","type":"uint32"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "showMyShopList",
-			"inputs": [
-				{"name":"index","type":"uint8"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "printMyShopList",
-			"inputs": [
-				{"components":[{"name":"id","type":"uint32"},{"name":"name","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"time","type":"uint64"},{"name":"isPaid","type":"bool"},{"name":"price","type":"uint64"}],"name":"myPurchases","type":"tuple[]"}
 			],
 			"outputs": [
 			]

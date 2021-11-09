@@ -4,10 +4,10 @@ pragma AbiHeader time;
 pragma AbiHeader pubkey;
 
 // Our contracts and debots
-import "AbsDebot.sol";
+import "AbstractDebot.sol";
 
 // This debot makes purchses
-contract DoShoppingDebot is AbsDebot {
+contract BuyerDebot is AbstractDebot {
     uint32 m_purchaseId; // Money for making of purchase
 
     function _menu() virtual override internal {}
@@ -17,7 +17,7 @@ contract DoShoppingDebot is AbsDebot {
         if(m_summary.unpaidPurchases > 0) {
             Terminal.input(tvm.functionId(setPurchaseId), "Enter purchase id you want to buy", false);
         } else {
-            Terminal.print(0, "You paid all the purchases");
+            Terminal.print(0, "You paid all the purchases or your shopping list is empty");
             _menu();
         }
     }
