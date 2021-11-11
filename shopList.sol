@@ -36,8 +36,15 @@ contract ShoppingList is IShoppingList{
         mapping (uint32 => Purchase) newShoppingList;
         for((, Purchase currentPurchase) : m_shoppingList) {
             newPurchaseCount++;
-            newShoppingList[newPurchaseCount] = currentPurchase;
-            newShoppingList[newPurchaseCount].id = newPurchaseCount;
+            // Create new shopping list
+            newShoppingList[newPurchaseCount] = Purchase(
+                newPurchaseCount,
+                currentPurchase.name,
+                currentPurchase.amount,
+                currentPurchase.time,
+                currentPurchase.isPaid,
+                currentPurchase.price
+            );
         }
         m_shoppingList = newShoppingList;
         m_purchasesCount--;
