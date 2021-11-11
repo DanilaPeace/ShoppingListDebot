@@ -53,7 +53,7 @@ contract ModifierDebot is AbstractDebot {
     // These methods remove some purchase
     function deleteSomePurchase() public {
         if (m_summary.unpaidPurchases + m_summary.paidPurchases > 0) {
-            Terminal.input(tvm.functionId(deleteSomePurchase_), "Enter purchase id with you want to delete: ", false);
+            Terminal.input(tvm.functionId(deleteSomePurchase_), "Enter purchase id you want to delete: ", false);
         } else {
             Terminal.print(0, "Sorry, you deleted all the purchases or your shopping list is empty");
             _menu();
