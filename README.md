@@ -15,8 +15,11 @@ tonos decode stateinit shopList.tvc --tvc
 Put the output of this function in the `code.json` file.
 
 ---
+## Automatic way with bash script
+1. You need to prepare the `code.file` as above
+2. Just run the `localDebot.sh` bash script
 
-## Commands for deploying and running debot
+## Commands for deploying and running debot manually
 1. 
 ```
 tonos genaddr ShopListDebot.tvc --genkey debot.keys.json ShopListDebot.abi.json > log.log
