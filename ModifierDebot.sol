@@ -32,7 +32,6 @@ contract ModifierDebot is AbstractDebot {
             Terminal.print(0, "Ooops! Sorry, amount must be integer!");
             addPurchase(1);
         }
-
     }
 
     function callAddPurchase(uint32 purchaseAmount) public view {

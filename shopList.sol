@@ -7,8 +7,9 @@ import "InterfacesAndStructs.sol";
 // This debot implements the business logic
 contract ShoppingList is IShoppingList{
     uint256 m_ownerPubkey;
-    mapping (uint32 => Purchase) public m_shoppingList;
     uint32 public m_purchasesCount;
+    
+    mapping (uint32 => Purchase) public m_shoppingList;
 
     constructor(uint256 pubkey) public {
         require(pubkey != 0, 101);
@@ -30,10 +31,12 @@ contract ShoppingList is IShoppingList{
     function deletePurchase(uint32 purchaseId) public onlyOwner override{
         require(m_shoppingList.exists(purchaseId), 103);
         tvm.accept();
+
         delete m_shoppingList[purchaseId];
 
         uint32 newPurchaseCount = 0;
         mapping (uint32 => Purchase) newShoppingList;
+
         for((, Purchase currentPurchase) : m_shoppingList) {
             newPurchaseCount++;
             // Create new shopping list
@@ -46,6 +49,7 @@ contract ShoppingList is IShoppingList{
                 currentPurchase.price
             );
         }
+
         m_shoppingList = newShoppingList;
         m_purchasesCount--;
     }
@@ -59,13 +63,13 @@ contract ShoppingList is IShoppingList{
     }
 
     // Get methods
-    function getPurchases() public view override returns(Purchase[] myPurchases){
+    function getPurchases() public view override returns (Purchase[] myPurchases) {
         for ((uint id, Purchase purchase) : m_shoppingList) {
             myPurchases.push(purchase);
         }
     }
     
-    function getSummary() external override returns(PurchasesSummary summary) {
+    function getSummary() external override returns (PurchasesSummary summary) {
         for((uint id, Purchase purchase) : m_shoppingList) {
             if(purchase.isPaid) {
                 summary.paidPurchases += purchase.amount;

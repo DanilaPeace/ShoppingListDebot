@@ -20,9 +20,10 @@ abstract contract AbstractDebot is Debot{
     TvmCell m_stateInit; // contract initial state
 
     address m_address;  // contract address
-    PurchasesSummary m_summary; // summary for existing purchases
-    uint256 m_masterPubKey; // User pubkey
     address m_walletForDeploy;  // User wallet address
+    uint256 m_masterPubKey; // User pubkey
+
+    PurchasesSummary m_summary; // summary for existing purchases
 
     uint32 INITIAL_BALANCE =  200000000;  // Initial SHOPPINGLIST contract balance
 
@@ -31,7 +32,7 @@ abstract contract AbstractDebot is Debot{
     }
 
     /// @notice Returns Metadata about DeBot.
-    function getDebotInfo() public functionID(0xDEB) override view returns(
+    function getDebotInfo() public functionID(0xDEB) override view returns (
         string name, string version, string publisher, string key, string author,
         address support, string hello, string language, string dabi, bytes icon
     ) {
@@ -50,16 +51,15 @@ abstract contract AbstractDebot is Debot{
         return [ Terminal.ID, Menu.ID, AddressInput.ID, ConfirmInput.ID ];
     }
     
-
     function setCode(TvmCell code, TvmCell data) public {
         require(msg.pubkey() == tvm.pubkey(), 101);
         tvm.accept();
+
         m_code = code;
         m_data = data;
 
         m_stateInit = tvm.buildStateInit(m_code, m_data);
     }
-
 
     function onError(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, format("Operation failed. sdkError {}, exitCode {}", sdkError, exitCode));
@@ -71,6 +71,7 @@ abstract contract AbstractDebot is Debot{
 
     function _getSummary(uint32 answerId) private view {
         optional(uint256) none;
+        
         IShoppingList(m_address).getSummary{
             abiVer: 2,
             extMsg: true,
@@ -90,12 +91,15 @@ abstract contract AbstractDebot is Debot{
 
     function savePublicKey(string value) public {
         (uint res, bool status) = stoi("0x"+value);
+
         if (status) {
             m_masterPubKey = res;
 
             Terminal.print(0, "Checking if you already have a SHOPPINGLIST list ...");
+
             TvmCell deployState = tvm.insertPubkey(m_stateInit, m_masterPubKey);
             m_address = address.makeAddrStd(0, tvm.hash(deployState));
+            
             Terminal.print(0, format( "Info: your SHOPPINGLIST contract address is {}", m_address));
             Sdk.getAccountType(tvm.functionId(checkStatus), m_address);
         } else {
@@ -126,6 +130,7 @@ abstract contract AbstractDebot is Debot{
         m_walletForDeploy = value;
         optional(uint256) pubkey = 0;
         TvmCell empty;
+
         Transactable(m_walletForDeploy).sendTransaction{
             abiVer: 2,
             extMsg: true,
@@ -141,7 +146,6 @@ abstract contract AbstractDebot is Debot{
     function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
         creditAccount(m_walletForDeploy);
     }
-
 
     function waitBeforeDeploy() public {
         Sdk.getAccountType(tvm.functionId(checkIfAccountUnInit), m_address);
@@ -159,6 +163,7 @@ abstract contract AbstractDebot is Debot{
     function deploy() private view {
         TvmCell image = tvm.insertPubkey(m_stateInit, m_masterPubKey);
         optional(uint256) none;
+
         TvmCell deployMsg = tvm.buildExtMsg({
             abiVer: 2,
             dest: m_address,
@@ -171,12 +176,13 @@ abstract contract AbstractDebot is Debot{
             stateInit: image,
             call: {HasConstructorWithPubKey, m_masterPubKey}
         });
+
         tvm.sendrawmsg(deployMsg, 1);
     }
 
-
     function onErrorRepeatDeploy(uint32 sdkError, uint32 exitCode) public {
         Terminal.print(0, "SOME ERROR. WE ARE TRYING DEPLOY AGAIN!");
+        
         deploy();
     }
 
