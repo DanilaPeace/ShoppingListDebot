@@ -19,19 +19,21 @@ contract ShoppingList is IShoppingList{
 
     modifier onlyOwner() {
         require(msg.pubkey() == m_ownerPubkey, 102);
+        tvm.accept();
+        _;
+    }
+
+    modifier checkPurchaseExistense(uint32 id) {
+        require(m_shoppingList.exists(id), 103);
         _;
     }
 
     function pushPurchase(string purchaseName, uint32 amount) public onlyOwner override{
-        tvm.accept();
         m_purchasesCount++;
         m_shoppingList[m_purchasesCount] = Purchase(m_purchasesCount, purchaseName, amount, now, false, 0);
     }
 
-    function deletePurchase(uint32 purchaseId) public onlyOwner override{
-        require(m_shoppingList.exists(purchaseId), 103);
-        tvm.accept();
-
+    function deletePurchase(uint32 purchaseId) public checkPurchaseExistense(purchaseId) onlyOwner override{
         delete m_shoppingList[purchaseId];
 
         uint32 newPurchaseCount = 0;
@@ -54,10 +56,7 @@ contract ShoppingList is IShoppingList{
         m_purchasesCount--;
     }
 
-    function buyPurchase(uint32 purchaseId, uint64 fullPrice) public onlyOwner override{
-        require(m_shoppingList.exists(purchaseId), 103);
-        tvm.accept();
-
+    function buyPurchase(uint32 purchaseId, uint64 fullPrice) public checkPurchaseExistense(purchaseId) onlyOwner override{
         m_shoppingList[purchaseId].isPaid = true;
         m_shoppingList[purchaseId].price = fullPrice;
     }

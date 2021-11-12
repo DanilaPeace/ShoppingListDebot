@@ -53,19 +53,19 @@
 			]
 		},
 		{
-			"name": "m_shoppingList",
-			"inputs": [
-			],
-			"outputs": [
-				{"components":[{"name":"id","type":"uint32"},{"name":"name","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"time","type":"uint64"},{"name":"isPaid","type":"bool"},{"name":"price","type":"uint64"}],"name":"m_shoppingList","type":"map(uint32,tuple)"}
-			]
-		},
-		{
 			"name": "m_purchasesCount",
 			"inputs": [
 			],
 			"outputs": [
 				{"name":"m_purchasesCount","type":"uint32"}
+			]
+		},
+		{
+			"name": "m_shoppingList",
+			"inputs": [
+			],
+			"outputs": [
+				{"components":[{"name":"id","type":"uint32"},{"name":"name","type":"bytes"},{"name":"amount","type":"uint32"},{"name":"time","type":"uint64"},{"name":"isPaid","type":"bool"},{"name":"price","type":"uint64"}],"name":"m_shoppingList","type":"map(uint32,tuple)"}
 			]
 		}
 	],
