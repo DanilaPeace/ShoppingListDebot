@@ -22,7 +22,7 @@ abstract contract AbstractDebot is Debot{
     address m_address;  // contract address
     PurchasesSummary m_summary; // summary for existing purchases
     uint256 m_masterPubKey; // User pubkey
-    address m_msigAddress;  // User wallet address
+    address m_walletForDeploy;  // User wallet address
 
     uint32 INITIAL_BALANCE =  200000000;  // Initial SHOPPINGLIST contract balance
 
@@ -123,10 +123,10 @@ abstract contract AbstractDebot is Debot{
     }
 
     function creditAccount(address value) public {
-        m_msigAddress = value;
+        m_walletForDeploy = value;
         optional(uint256) pubkey = 0;
         TvmCell empty;
-        Transactable(m_msigAddress).sendTransaction{
+        Transactable(m_walletForDeploy).sendTransaction{
             abiVer: 2,
             extMsg: true,
             sign: true,
@@ -139,7 +139,7 @@ abstract contract AbstractDebot is Debot{
     }
 
     function onErrorRepeatCredit(uint32 sdkError, uint32 exitCode) public {
-        creditAccount(m_msigAddress);
+        creditAccount(m_walletForDeploy);
     }
 
 
