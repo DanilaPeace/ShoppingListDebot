@@ -6,7 +6,7 @@ pragma AbiHeader pubkey;
 // Our contracts and debots
 import "AbstractDebot.sol";
 
-// This debot can add, remove purchases to the shopping list and show information about the existing list 
+// This debot can add and remove purchases to the shopping list 
 contract ModifierDebot is AbstractDebot {
     string m_purchaseName;
 

@@ -6,7 +6,7 @@ pragma AbiHeader pubkey;
 // Our contracts and debots
 import "AbstractDebot.sol";
 
-// This debot can add, remove purchases to the shopping list and show information about the existing list 
+// This debot can show information about the existing list 
 contract ShownerDebot is AbstractDebot {
 
     function _menu() virtual override internal {}
